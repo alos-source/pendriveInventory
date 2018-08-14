@@ -43,16 +43,16 @@ $myFilePathXML=$myUserPath+ $inventarName + '.xml' #create separte file for each
 
 
 #get Device Information
-Get-WmiObject win32_logicaldisk -filter "drivetype=3" |  where{$_.DeviceID -eq'E:'} | select DeviceID,VolumeName,Size,FreeSpace,name| Out-File -FilePath $myFilePath
-Get-WmiObject win32_logicaldisk -filter "drivetype=2" |  where{$_.DeviceID -eq'E:'} | select DeviceID,VolumeName,Size,FreeSpace,name| Out-File -FilePath $myFilePath -Append
-Get-WmiObject win32_logicaldisk |  where{$_.DeviceID -eq'E:'} | select DeviceID,VolumeName,Size,FreeSpace,name| export-clixml  $myFilePathXML #$Env:userprofile\drive.xml
+Get-WmiObject win32_logicaldisk -filter "drivetype=3" |  Where-Object{$_.DeviceID -eq'E:'} | Select-Object DeviceID,VolumeName,Size,FreeSpace,name| Out-File -FilePath $myFilePath
+Get-WmiObject win32_logicaldisk -filter "drivetype=2" |  Where-Object{$_.DeviceID -eq'E:'} | Select-Object DeviceID,VolumeName,Size,FreeSpace,name| Out-File -FilePath $myFilePath -Append
+Get-WmiObject win32_logicaldisk |  Where-Object{$_.DeviceID -eq'E:'} | Select-Object DeviceID,VolumeName,Size,FreeSpace,name| export-clixml  $myFilePathXML #$Env:userprofile\drive.xml
 
 
 wmic diskdrive 1 get size,model,SerialNumber| Out-File -FilePath $myFilePath -Append
 #wmic diskdrive 1 get size,model,SerialNumber| export-clixml  $Env:userprofile\drive2.xml
 
 #Get Folders on Device
-Get-ChildItem $inventarDrive -force | where {$_.attributes -match "Directory"}| Out-File -FilePath $myFilePath -Append
-Get-ChildItem $inventarDrive -force | where {$_.attributes -match "Directory"}| export-clixml  $Env:userprofile\folders.xml
+Get-ChildItem $inventarDrive -force | Where-Object {$_.attributes -match "Directory"}| Out-File -FilePath $myFilePath -Append
+Get-ChildItem $inventarDrive -force | Where-Object {$_.attributes -match "Directory"}| export-clixml  $Env:userprofile\folders.xml
 
 Write-Output "Saved data at: "$myFilePath

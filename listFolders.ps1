@@ -25,6 +25,7 @@ if ($inventarName-eq"dummy"){
     #$volumeName.length
     #$volumeName
     #$serialNum[2..2]
+    Set-Content -Path ($inventarDrive+$inventarNameFile) -Value $inventarName
     echo "no name available, created from SN"
 }
 $myFilePath=$myUserPath+ $inventarName + $myFileExt #create separte file for each device according to name

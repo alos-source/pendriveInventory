@@ -9,7 +9,7 @@ if(Test-Path ($inventarDrive+$inventarNameFile)) {
 else {
     copy-item C:\Users\alex\Documents\Projekte\Skripte\speicherInventar\festplattenordner\.inventar -Recurse "E:\"
     $inventarName = Get-Content ($inventarDrive+$inventarNameFile) #Read DeviceName from Device, must be available and unique
-    echo "no file available, created new"
+    Write-Output "no file available, created new"
 }
 
 if ($inventarName-eq"dummy"){

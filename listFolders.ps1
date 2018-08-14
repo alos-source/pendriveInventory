@@ -4,6 +4,15 @@ $inventarDrive="E:"
 $inventarNameFile='\.inventar\inventar.name'
 $lostAndFoundFile='\lost&found.txt'
 
+if(Test-Path ($inventarDrive+$lostAndFoundFile)) { #write lost and found file to disk
+
+}
+else {
+    copy-item C:\Users\alex\Documents\Projekte\Skripte\speicherInventar\festplattenordner\lostAndFound.txt -Recurse "E:\"
+    Write-Output "no lost&found file available, created new"
+}
+
+
 if(Test-Path ($inventarDrive+$inventarNameFile)) {
     $inventarName = Get-Content ($inventarDrive+$inventarNameFile) #Read DeviceName from Device, must be available and unique
 }

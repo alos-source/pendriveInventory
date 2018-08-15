@@ -2,22 +2,23 @@ $myUserPath=$Env:userprofile+"\documents\SpeicherInventar\"
 $myFileExt=".txt"
 $inventarDrive="E:"
 $inventarNameFile='\.inventar\inventar.name'
-$lostAndFoundFile='\lost&found.txt'
+$lostAndFoundFile='\lostAndfound.txt'
 
 if(Test-Path ($inventarDrive+$lostAndFoundFile)) { #write lost and found file to disk
-
+    Write-Output "lost&found file available"
 }
 else {
-    copy-item C:\Users\alex\Documents\Projekte\Skripte\speicherInventar\festplattenordner\lostAndFound.txt -Recurse "E:\"
+    #copy-item C:\Users\alex\Documents\Projekte\Skripte\speicherInventar\festplattenordner\lostAndFound.txt -Recurse "E:\"
+    copy-item $PSScriptRoot"\festplattenordner\lostAndFound.txt" -Recurse "E:\"
     Write-Output "no lost&found file available, created new"
 }
 
 
-if(Test-Path ($inventarDrive+$inventarNameFile)) {
+if(Test-Path ($inventarDrive+$inventarNameFile)) { #write inventary name on the device
     $inventarName = Get-Content ($inventarDrive+$inventarNameFile) #Read DeviceName from Device, must be available and unique
 }
 else {
-    copy-item C:\Users\alex\Documents\Projekte\Skripte\speicherInventar\festplattenordner\.inventar -Recurse "E:\"
+    copy-item $PSScriptRoot"\festplattenordner\.inventar" -Recurse "E:\"
     $inventarName = Get-Content ($inventarDrive+$inventarNameFile) #Read DeviceName from Device, must be available and unique
     Write-Output "no file available, created new"
 }
@@ -45,7 +46,7 @@ $myFilePathXML=$myUserPath+ $inventarName + '.xml' #create separte file for each
 #get Device Information
 Get-WmiObject win32_logicaldisk -filter "drivetype=3" |  Where-Object{$_.DeviceID -eq'E:'} | Select-Object DeviceID,VolumeName,Size,FreeSpace,name| Out-File -FilePath $myFilePath
 Get-WmiObject win32_logicaldisk -filter "drivetype=2" |  Where-Object{$_.DeviceID -eq'E:'} | Select-Object DeviceID,VolumeName,Size,FreeSpace,name| Out-File -FilePath $myFilePath -Append
-Get-WmiObject win32_logicaldisk |  Where-Object{$_.DeviceID -eq'E:'} | Select-Object DeviceID,VolumeName,Size,FreeSpace,name| export-clixml  $myFilePathXML #$Env:userprofile\drive.xml
+Get-WmiObject win32_logicaldisk |  Where-Object{$_.DeviceID -eq'E:'} | Select-Object DeviceID,drivetype,VolumeName,Size,FreeSpace,name| export-clixml  $myFilePathXML #$Env:userprofile\drive.xml
 
 
 wmic diskdrive 1 get size,model,SerialNumber| Out-File -FilePath $myFilePath -Append

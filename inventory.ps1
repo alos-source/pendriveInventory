@@ -13,9 +13,9 @@ $hash = @{
 
    4="NetworkDisk"
 
-   5 = "CompactDisk"}
+   5 = "CompactDisk"} # hash table serves as lookup table for the drive types
 
-if ((Test-Path $inventarDrive$inventarFolder)) 
+if ((Test-Path $inventarDrive$inventarFolder)) # only devices containing the .inventory file in their root should be added to the inventory
 
 {Write-Output "start inventory"
 
@@ -25,7 +25,7 @@ $driveDisk3 = Get-CimInstance Win32_DiskDrive
 $content = Get-ChildItem -Path $inventarDrive | Select Name, CreationTime 
 
 $pendrive = New-Object -TypeName PSObject
-$pendrive | Add-Member -NotePropertyName Serial -NotePropertyValue $driveDisk3.SerialNumber[1].Trim()
+$pendrive | Add-Member -NotePropertyName Serial -NotePropertyValue $driveDisk3.SerialNumber[1].Trim() # some vendors seem to add space-characters to their serial, so it has to be trimmed
 $pendrive | Add-Member -NotePropertyName Model -NotePropertyValue $driveDisk3.Model[1]
 $pendrive | Add-Member -NotePropertyName Size -NotePropertyValue $driveDisk3.Size[1]
 $pendrive | Add-Member -NotePropertyName VolumeName -NotePropertyValue $driveDisk2.VolumeName[1]
@@ -38,7 +38,7 @@ if (!(Test-Path $myUserPath)) {New-Item -Path $myUserPath -ItemType Directory}
 if (!(Test-Path $myUserPath\LostAndFound.txt)) {Copy-Item -Path ".\LostAndFound.txt" -Destination $myUserPath}
 if (!(Test-Path $myUserPath$folderType)) {New-Item -Path $myUserPath$folderType -ItemType Directory}
 
-$fileInventar=$pendrive.Serial
+$fileInventar=$pendrive.Serial # serial serves unique folder name
 if (!(Test-Path $myUserPath$folderType\$fileInventar)) {New-Item -Path $myUserPath$folderType\$fileInventar -ItemType Directory}
 
 Write-Output 'Read Drive '$fileInventar
@@ -47,5 +47,5 @@ $pendrive | ConvertTo-Json > $myUserPath$folderType\$fileInventar\drive.json
 }
 else 
 {
-Write-Output "inventory skipped"
+Write-Output "no .inventory found on drive, inventory skipped" # if no inventory folder was found, nothing should be done
 }

@@ -12,7 +12,7 @@ Additionally, I asked myself what happens when one of my pendrives would get los
 Data is stored in the user profile at: `%appdata%\.inventory\`
 
 ## Environment
-This program has been devolped under the following environment:
+This program has been developed under the following environment:
 - Win10: 2004
 - Powershell Version: 5.1.19041.906
 

@@ -13,7 +13,7 @@ if (!(Test-Path $inventarDrive$inventarFolder))
 New-Item -Path $inventarDrive$inventarFolder -ItemType Directory
 
 if(!(Test-Path $inventarDrive\LostAndFound.txt)) {Copy-Item -Path $myUserPath"\LostAndFound.txt" -Destination $inventarDrive}
-g
+
 $PSScriptRoot
 & "$PSScriptRoot\inventory.ps1"
 
